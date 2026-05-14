@@ -2,9 +2,10 @@ name: Auto-update Scoop bucket
 
 on:
   schedule:
-    # 每天凌晨 2 点 (UTC时间) 自动运行检查更新
-    - cron: '0 2 * * *'
-  workflow_dispatch: # 允许你手动点击按钮触发更新
+    # 语法：分 时 日 月 周
+    # */4 表示“每隔 4 个小时”执行一次（即 0点, 4点, 8点, 12点, 16点, 20点）
+    - cron: '0 */4 * * *'
+  workflow_dispatch: # 允许手动点击运行
 
 jobs:
   update-manifests:
