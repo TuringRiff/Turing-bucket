@@ -1,0 +1,49 @@
+{
+    "version": "2.0.7+5203",
+    "description": "基于 PiliPlus 修改的 Flutter B站桌面客户端，支持离线缓存",
+    "homepage": "https://github.com/Starfallan/PiliNara",
+    "license": {
+        "identifier": "GPL-3.0-only"
+    },
+    "notes": [
+        "PiliNara is NOT portable. Application data is stored in standard system directories:",
+        "  - Data: %APPDATA%\\com.example\\PiliNara",
+        "  - Temp: Managed by Windows %TEMP%",
+        "A default setting is injected during installation to prevent the app from writing logs to your Documents folder.",
+        "To cleanly remove all data and settings, use 'scoop uninstall --purge pilinara'."
+    ],
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/Starfallan/PiliNara/releases/latest/download/PiliNara_windows_2.0.7+5203_x64_portable.zip",
+            "hash": "6957657a48855f2848dc1b8af0c89e611caf0190ca46851aa37ac7102296e31a"
+        }
+    },
+    "shortcuts": [
+        [
+            "pilinara.exe",
+            "PiliNara"
+        ]
+    ],
+    "post_install": [
+        "Write-Host 'Injecting default setting.hive to disable logging to Documents folder...' -ForegroundColor Yellow",
+        "$hiveDir = Join-Path $env:APPDATA 'com.example\\PiliNara\\hive'",
+        "$settingPath = Join-Path $hiveDir 'setting.hive'",
+        "if (-not (Test-Path $settingPath)) {",
+        "    New-Item -ItemType Directory -Force -Path $hiveDir | Out-Null",
+        "    $settingTemplate = 'FQAAAAEJZW5hYmxlTG9nAwDDP4jR'",
+        "    [IO.File]::WriteAllBytes($settingPath, [Convert]::FromBase64String($settingTemplate))",
+        "}"
+    ],
+    "post_uninstall": "if ($purge) { Remove-Item \"$env:APPDATA\\com.example\\PiliNara\", \"$env:LOCALAPPDATA\\com.example\\PiliNara\" -Force -Recurse -ErrorAction SilentlyContinue }",
+    "checkver": {
+        "github": "https://github.com/Starfallan/PiliNara",
+        "regex": "PiliNara_windows_(?<version>[\\d.]+\\+\\d+)_x64_portable\\.zip"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/Starfallan/PiliNara/releases/latest/download/PiliNara_windows_$version_x64_portable.zip"
+            }
+        }
+    }
+}

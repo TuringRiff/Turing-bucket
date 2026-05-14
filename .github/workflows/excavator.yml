@@ -1,0 +1,17 @@
+name: Auto-update Scoop bucket
+
+on:
+  schedule:
+    # 每天凌晨 2 点 (UTC时间) 自动运行检查更新
+    - cron: '0 2 * * *'
+  workflow_dispatch: # 允许你手动点击按钮触发更新
+
+jobs:
+  update-manifests:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update configurations
+        uses: ScoopInstaller/GithubActions@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
