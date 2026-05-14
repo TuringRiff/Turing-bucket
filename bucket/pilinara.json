@@ -14,7 +14,7 @@
     ],
     "architecture": {
         "64bit": {
-            "url": "https://github.com/Starfallan/PiliNara/releases/latest/download/PiliNara_windows_2.0.7+5203_x64_portable.zip",
+            "url": "https://github.com/Starfallan/PiliNara/releases/latest/download/PiliNara_windows_2.0.7%2B5203_x64_portable.zip",
             "hash": "6957657a48855f2848dc1b8af0c89e611caf0190ca46851aa37ac7102296e31a"
         }
     },
@@ -36,13 +36,14 @@
     ],
     "post_uninstall": "if ($purge) { Remove-Item \"$env:APPDATA\\com.example\\PiliNara\", \"$env:LOCALAPPDATA\\com.example\\PiliNara\" -Force -Recurse -ErrorAction SilentlyContinue }",
     "checkver": {
-        "github": "https://github.com/Starfallan/PiliNara",
-        "regex": "PiliNara_windows_(?<version>[\\d.]+\\+\\d+)_x64_portable\\.zip"
+        "url": "https://api.github.com/repos/Starfallan/PiliNara/releases/latest",
+        "regex": "/download/(?<tag>[^/]+)/PiliNara_windows_(?<main>[\\d.]+)%2B(?<build>\\d+)_x64_portable\\.zip",
+        "replace": "${main}+${build}"
     },
     "autoupdate": {
         "architecture": {
             "64bit": {
-                "url": "https://github.com/Starfallan/PiliNara/releases/latest/download/PiliNara_windows_$version_x64_portable.zip"
+                "url": "https://github.com/Starfallan/PiliNara/releases/download/$matchTag/PiliNara_windows_$matchMain%2B$matchBuild_x64_portable.zip"
             }
         }
     }
